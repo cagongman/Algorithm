@@ -1,31 +1,21 @@
 #include <string>
 #include <vector>
-#include <map>
- #include <numeric>
-
+#include <set>
 
 using namespace std;
 
 int solution(vector<int> elements) {
-    int answer = 0;
-    map<int, bool> check;
-    
-    for(int i = 1; i <= elements.size(); i++)
-    {
-        for(int j = 0; j < elements.size(); j++)
-        {
-            int sum = 0;
-            
-            for(int k = 0; k < i; k++)
-                sum += elements[(j + k) % elements.size()];
-            
-            if(check.count(sum) <= 0)
-            {
-                check[sum] = true;
-                answer++;
-            }
+    set<int> S;
+
+    int n = elements.size();
+
+    for (int i = 0 ; i < n ; ++i) {
+        int sum = 0;
+        for (int j = i ; j < i + n ; ++j) {
+            sum += elements[j % n];
+            S.insert(sum);
         }
     }
-    
-    return answer;
+
+    return S.size();
 }
