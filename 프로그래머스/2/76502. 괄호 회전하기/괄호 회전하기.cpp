@@ -1,54 +1,41 @@
+
 #include <string>
 #include <vector>
-#include <list>
 #include <stack>
-
 using namespace std;
 
+string rotate(string str) {
+    string res = str;
+    char tmp = res[0];
+    res.erase(0, 1);
+    res.push_back(tmp);
+    return res;
+}
 
-bool CheckPop(char front, char back)
-{
-   if (front == '(' && back == ')') return true;
-    if (front == '[' && back == ']') return true;
-    if (front == '{' && back == '}') return true;
-    return false;
+bool isCorrect(string str) {
+    stack<char> st;
+    for(int i = 0; i < str.size(); i++) {
+        if(str[i] == '(' || str[i] == '{' || str[i] == '[') {
+            st.push(str[i]);
+        } else {
+            if(st.empty()) return false;
+            else {
+                if(st.top() == '(' && str[i] == ')') st.pop();
+                else if(st.top() == '{' && str[i] == '}') st.pop();
+                else if(st.top() == '[' && str[i] == ']') st.pop();
+            }
+        }
+    }
+    if(!st.empty()) return false;
+    return true;
 }
 
 int solution(string s) {
     int answer = 0;
-    list<char> Brackets;
-    
-    for(char c : s)
-        Brackets.push_back(c);
-    
-    for(int i = 0; i < s.size(); i++)
-    {
-        if(i != 0)
-        {
-            int temp;
-            temp = Brackets.front();
-            Brackets.pop_front();
-            Brackets.push_back(temp);
-        }
-        
-        stack<char> check;
-        
-        for(auto value : Brackets)
-        {
-            if(check.empty())
-                check.push(value);
-            else
-            {
-                if(CheckPop(check.top(), value))
-                    check.pop();
-                else
-                    check.push(value);
-            }
-        }
-        
-        if(check.empty())
-            answer++;
+    if(isCorrect(s)) answer++; 
+    for(int i = 1; i < s.size(); i++) {
+        s = rotate(s);
+        if(isCorrect(s)) answer++;
     }
-        
     return answer;
 }
