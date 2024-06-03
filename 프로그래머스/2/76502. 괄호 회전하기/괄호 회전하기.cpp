@@ -1,41 +1,49 @@
-
 #include <string>
 #include <vector>
-#include <stack>
+
 using namespace std;
 
-string rotate(string str) {
-    string res = str;
-    char tmp = res[0];
-    res.erase(0, 1);
-    res.push_back(tmp);
-    return res;
+bool IsBracket(char front, char back)
+{
+    if (front == '(' && back == ')') return true;
+    if (front == '[' && back == ']') return true;
+    if (front == '{' && back == '}') return true;
+    return false;
 }
 
-bool isCorrect(string str) {
-    stack<char> st;
-    for(int i = 0; i < str.size(); i++) {
-        if(str[i] == '(' || str[i] == '{' || str[i] == '[') {
-            st.push(str[i]);
-        } else {
-            if(st.empty()) return false;
-            else {
-                if(st.top() == '(' && str[i] == ')') st.pop();
-                else if(st.top() == '{' && str[i] == '}') st.pop();
-                else if(st.top() == '[' && str[i] == ']') st.pop();
-            }
+bool IsBracketString(string str)
+{
+    if (str.empty())
+        return true;
+
+    bool loop = false;
+    for (int i = 1; i < str.size(); ++i)
+    {
+        if (IsBracket(str[i - 1], str[i]))
+        {
+            str.erase(i - 1, 2);
+            loop = true;
         }
     }
-    if(!st.empty()) return false;
-    return true;
+
+    if (loop)
+        return IsBracketString(str);
+    return false;
 }
 
 int solution(string s) {
     int answer = 0;
-    if(isCorrect(s)) answer++; 
-    for(int i = 1; i < s.size(); i++) {
-        s = rotate(s);
-        if(isCorrect(s)) answer++;
+    int loopCount = s.size();
+
+    for (int i = 0; i < loopCount; ++i)
+    {
+        if (IsBracketString(s))
+            ++answer;
+
+        char front = s.front();
+        s.erase(0, 1);
+        s.push_back(front);
     }
+
     return answer;
 }
