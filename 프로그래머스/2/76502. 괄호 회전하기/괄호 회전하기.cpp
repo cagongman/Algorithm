@@ -6,26 +6,12 @@
 using namespace std;
 
 
-bool CheckPop(char open, char close)
+bool CheckPop(char front, char back)
 {
-    switch(open)
-    {
-        case '{':
-            if(close == '}')
-                return true;
-            else
-                return false;
-        case '(':
-            if(close == ')')
-                return true;
-            else
-                return false;
-        case '[':
-            if(close == ']')
-                return true;
-            else
-                return false;
-    }
+   if (front == '(' && back == ')') return true;
+    if (front == '[' && back == ']') return true;
+    if (front == '{' && back == '}') return true;
+    return false;
 }
 
 int solution(string s) {
@@ -50,19 +36,13 @@ int solution(string s) {
         for(auto value : Brackets)
         {
             if(check.empty())
-            {
                 check.push(value);
-            }
             else
             {
                 if(CheckPop(check.top(), value))
-                {
                     check.pop();
-                }
                 else
-                {
                     check.push(value);
-                }
             }
         }
         
