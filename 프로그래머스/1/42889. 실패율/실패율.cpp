@@ -16,7 +16,7 @@ bool compare(const pair<int,float>& a, const pair<int, float>& b)
 vector<int> solution(int N, vector<int> stages) {
     vector<int> answer;
     vector<int> stageNum(N + 2, 0);
-    vector<pair<int, float>> failPersent;
+    vector<pair<int, float>> failPercent;
     
     // 각 스테이지에 머물러있는 사람 수 저장
     for(int i = 0; i < stages.size(); i++)
@@ -29,7 +29,7 @@ vector<int> solution(int N, vector<int> stages) {
     for(int i = 1; i <= N; i++)
     {
         // 아직 해당 스테이지에 있는 사람 / (전체 플레이어 - 전 스테이지까지의 인원)
-        failPersent.push_back(make_pair(i, (float)stageNum[i] / (float)(playerNum - pastStageNum)));
+        failPercent.push_back(make_pair(i, (float)stageNum[i] / (float)(playerNum - pastStageNum)));
 
         cout << pastStageNum << endl;
         
@@ -39,16 +39,16 @@ vector<int> solution(int N, vector<int> stages) {
         if(pastStageNum == playerNum)
         {
             for(int j = i + 1; j <= N; j++)
-                failPersent.push_back(make_pair(j, 0.f));
+                failPercent.push_back(make_pair(j, 0.f));
             
             break;
         }
     }
     
-    sort(failPersent.begin(), failPersent.end(), compare);
+    sort(failPercent.begin(), failPercent.end(), compare);
     
-    for(int i = 0; i < failPersent.size(); i++)
-        answer.push_back(failPersent[i].first);
+    for(int i = 0; i < failPercent.size(); i++)
+        answer.push_back(failPercent[i].first);
     
     return answer;
 }
