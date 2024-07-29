@@ -1,31 +1,33 @@
-#include <string>
 #include <vector>
+#include <cmath>
 
 using namespace std;
 
 vector<int> solution(vector<int> progresses, vector<int> speeds) {
     vector<int> answer;
-    int currentState = 0;
-    int num = progresses.size();
+    int n = progresses.size();
+    vector<int> days_left(n);
     
-    while(currentState < num)
+    for(int i = 0; i < n; ++i)
+        days_left[i] = ceil((100.0 - progresses[i]) / speeds[i]); 
+    
+    int count = 0;
+    int max_day = days_left[0];
+    
+    for(int i = 0; i < n; ++i)
     {
-        int exploreCnt = 0;
-        
-        for(int i = currentState; i < num; i++)
+        if(days_left[i] <= max_day)
         {
-            progresses[i] += speeds[i];
-            
-            if(progresses[currentState] >= 100 && progresses[i] >= 100)
-            {
-                exploreCnt++;
-                currentState++;
-            }
+            count++;
         }
-        
-        if(exploreCnt != 0)
-            answer.push_back(exploreCnt);
+        else
+        {
+            answer.push_back(count);
+            count = 1;
+            max_day = days_left[i];
+        }
     }
     
+    answer.push_back(count);
     return answer;
 }
