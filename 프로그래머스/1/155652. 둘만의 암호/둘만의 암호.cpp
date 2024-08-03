@@ -3,27 +3,23 @@
 
 using namespace std;
 
-bool is_skip(char c, string skip) // 스킵문자인지
-{
-    for(int i=0;i<skip.size();i++)
-        if (c == skip[i]) return true;
-    return false;
-}
-
-string solution(string s, string skip, int index)
-{
+string solution(string s, string skip, int index) {
     string answer = "";
-    for(int i=0;i<s.size();i++)
+
+    for(auto v : s)
     {
-        char c = s[i];
-        for(int j=0;j<index;)
+        int t = 0;
+        int c = v - 'a';
+        while(t < index)
         {
-            c += 1;
-            if (c == 'z' + 1) c = 'a'; // 'z'를 넘어가면 'a'로 바꿔준다.
-            if(!is_skip(c, skip)) // skip에 포함되지 않는 문자이면 카운트
-                j++;
+            c++;
+            v = (c % 26) + 'a';
+            if(skip.find(v) == string::npos)
+            {
+                t++;
+            }
         }
-        answer.push_back(c);
+        answer += v;
     }
     return answer;
 }
