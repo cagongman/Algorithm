@@ -1,15 +1,24 @@
 #include <string>
 #include <vector>
+
 using namespace std;
 
-int solution(int n, int m, vector<int> section)
-{
-    int answer = 0, cur = 0;
-    for(int i=0;i<section.size();i++)
+int solution(int n, int m, vector<int> section) {
+    int answer = 1;
+
+    int pivot = section[0];
+    for(const auto v : section)
     {
-        if (cur > section[i]) continue;
-        answer++;
-        cur = section[i] + m;
+        if(v < pivot + m)
+        {
+            continue;
+        }
+        else
+        {
+            pivot = v;
+            answer++;
+        }
     }
+
     return answer;
 }
